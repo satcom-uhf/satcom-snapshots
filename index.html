@@ -2,47 +2,53 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>SATCOM 248–268 MHz // Spectrum Archive</title>
 <style>
-  :root{--bg:#05080f;--panel:rgba(11,18,32,.9);--border:rgba(0,240,255,.25);--cyan:#00f0ff;--amber:#ffb800;--text:#d8e8ff;--muted:#6e88ad}
-  *{box-sizing:border-box;user-select:none}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:Consolas,monospace;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-  .hud{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--border);z-index:20}
-  .brand{font-weight:700;color:var(--cyan);text-shadow:0 0 10px rgba(0,240,255,.5);display:flex;align-items:center;gap:8px}
-  .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
-  select,input,button{background:#091120;color:var(--text);border:1px solid var(--border);border-radius:4px;padding:6px 10px;font-family:inherit;font-size:13px;outline:none}
-  select:hover,input:focus,button:hover{border-color:var(--cyan)}
+  :root{--bg:#05080f;--panel:rgba(11,18,32,.92);--border:rgba(0,240,255,.25);--cyan:#00f0ff;--amber:#ffb800;--text:#d8e8ff;--muted:#6e88ad}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Consolas,monospace;height:100dvh;display:flex;flex-direction:column;overflow:hidden;touch-action:none}
+  .hud{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 10px;background:var(--panel);border-bottom:1px solid var(--border);z-index:20}
+  .brand{font-weight:700;font-size:13px;color:var(--cyan);display:flex;align-items:center;gap:6px;margin-right:4px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+  select,input,button{background:#091120;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-family:inherit;font-size:13px;outline:none;min-height:34px}
   button{cursor:pointer}
-  button.active{background:rgba(0,240,255,.2);border-color:var(--cyan);color:#fff}
-  .readout{margin-left:auto;display:flex;align-items:center;gap:14px;background:#04070d;border:1px solid var(--border);padding:5px 12px;border-radius:4px}
-  .freq-val{font-size:16px;font-weight:700;color:var(--amber);min-width:118px;text-align:right}
-  .zoom-val{font-size:12px;color:var(--muted)}
-  .minimap-wrap{position:relative;height:52px;background:#03050a;border-bottom:1px solid var(--border);cursor:crosshair;overflow:hidden}
-  .minimap-wrap img{width:100%;height:100%;object-fit:fill;opacity:.72;pointer-events:none}
-  .minimap-lens{position:absolute;top:0;height:100%;border:1px solid var(--cyan);background:rgba(0,240,255,.15);pointer-events:none}
-  .viewport{position:relative;flex:1;overflow:hidden;cursor:grab;background:#04060b}
+  button.active{background:rgba(0,240,255,.22);border-color:var(--cyan);color:#fff}
+  .readout{margin-left:auto;display:flex;align-items:center;gap:8px;background:#04070d;border:1px solid var(--border);padding:4px 9px;border-radius:6px}
+  .freq-val{font-size:15px;font-weight:700;color:var(--amber);min-width:106px;text-align:right}
+  .zoom-val{font-size:11px;color:var(--muted)}
+  .minimap-wrap{position:relative;height:46px;background:#03050a;border-bottom:1px solid var(--border);cursor:crosshair;overflow:hidden;touch-action:none}
+  .minimap-wrap img{width:100%;height:100%;object-fit:fill;opacity:.75;pointer-events:none}
+  .minimap-lens{position:absolute;top:0;height:100%;border:1px solid var(--cyan);background:rgba(0,240,255,.18);pointer-events:none}
+  .viewport{position:relative;flex:1;overflow:hidden;cursor:grab;background:#04060b;touch-action:none}
   .viewport:active{cursor:grabbing}
-  #wfImg{position:absolute;top:50%;left:0;transform-origin:0 50%;will-change:transform}
-  .crosshair{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,184,0,.8);pointer-events:none;display:none;z-index:10}
-  .crosshair-tag{position:absolute;top:12px;left:8px;background:rgba(5,8,15,.92);border:1px solid var(--amber);color:var(--amber);padding:3px 7px;border-radius:3px;font-size:12px;font-weight:700;white-space:nowrap}
-  .footer{padding:6px 16px;font-size:11px;color:var(--muted);background:var(--panel);border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  #wfImg{position:absolute;top:50%;left:0;transform-origin:0 50%;will-change:transform;pointer-events:none}
+  .crosshair{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,184,0,.85);pointer-events:none;z-index:10}
+  .crosshair-tag{position:absolute;top:10px;left:6px;background:rgba(5,8,15,.92);border:1px solid var(--amber);color:var(--amber);padding:2px 6px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap}
+  .footer{padding:5px 10px;font-size:11px;color:var(--muted);background:var(--panel);border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:8px}
   .kbd{color:var(--cyan)}
+  @media(max-width:720px){
+    .brand{display:none}
+    .hide-mob{display:none}
+    #dateSelect{max-width:148px;font-size:12px}
+    #freqInput{width:96px !important;font-size:12px}
+    button{padding:5px 8px;font-size:12px}
+  }
 </style>
 </head>
 <body>
 <div class="hud">
-  <div class="brand"><span class="dot"></span>SATCOM // 248–268 MHz</div>
-  <button id="prevBtn" title="Предыдущий снимок (←)">◀</button>
+  <div class="brand"><span class="dot"></span>SATCOM 248–268</div>
+  <button id="prevBtn" title="Предыдущий (←)">◀</button>
   <select id="dateSelect"></select>
-  <button id="nextBtn" title="Следующий снимок (→)">▶</button>
-  <button id="abBtn" title="Сравнить с соседним днём (Space)">A/B Сравнить</button>
-  <input id="freqInput" type="text" placeholder="Частота (255.55)" style="width:155px">
-  <button id="goBtn">Перейти</button>
-  <button id="fitBtn">Весь диапазон</button>
-  <button id="oneToOneBtn">1:1</button>
+  <button id="nextBtn" title="Следующий (→)">▶</button>
+  <button id="abBtn" title="A/B сравнение (Space)">A/B</button>
+  <input id="freqInput" type="text" inputmode="decimal" placeholder="255.55" style="width:130px">
+  <button id="goBtn">OK</button>
+  <button id="fitBtn">Вся</button>
+  <button id="oneToOneBtn" class="hide-mob">1:1</button>
   <div class="readout">
-    <span class="zoom-val" id="zoomReadout">ZOOM 1.0x</span>
+    <span class="zoom-val hide-mob" id="zoomReadout">1.0x</span>
     <span class="freq-val" id="freqReadout">258.000 MHz</span>
   </div>
 </div>
@@ -55,12 +61,12 @@
   <div class="crosshair" id="crosshair"><div class="crosshair-tag" id="crosshairTag">258.000 MHz</div></div>
 </div>
 <div class="footer">
-  <div><span class="kbd">Колёсико</span> — зум · <span class="kbd">ЛКМ</span> — панорама · <span class="kbd">←/→</span> — дата · <span class="kbd">Space</span> — A/B сравнение</div>
+  <div class="hide-mob"><span class="kbd">Колёсико</span> — зум · <span class="kbd">ЛКМ</span> — панорама · <span class="kbd">Space</span> — A/B</div>
   <div id="fileInfo">Загрузка...</div>
 </div>
 <script>
 const START_MHZ=248,SPAN_MHZ=20;
-let files=[],currentIdx=0,abTimer=null,scale=1,offsetX=0,imgW=12000,imgH=428;
+let files=[],currentIdx=0,abTimer=null,scale=1,offsetX=0,imgW=12000,imgH=428,cursorX=null;
 const $=id=>document.getElementById(id);
 const wfImg=$("wfImg"),miniImg=$("miniImg"),miniLens=$("miniLens"),viewport=$("viewport"),minimap=$("minimap"),dateSelect=$("dateSelect"),freqReadout=$("freqReadout"),zoomReadout=$("zoomReadout"),crosshair=$("crosshair"),crosshairTag=$("crosshairTag"),fileInfo=$("fileInfo");
 
@@ -68,14 +74,25 @@ function clampOffset(){
   const vw=viewport.clientWidth,sw=imgW*scale;
   offsetX=sw<=vw?(vw-sw)/2:Math.min(0,Math.max(vw-sw,offsetX));
 }
+function updateCrosshair(x){
+  const vw=viewport.clientWidth;
+  const cx=(x!==null)?x:vw/2;
+  const f=Math.min(1,Math.max(0,(cx-offsetX)/(imgW*scale)));
+  const lbl=`${(START_MHZ+f*SPAN_MHZ).toFixed(3)} MHz`;
+  freqReadout.textContent=lbl;
+  crosshair.style.left=`${cx}px`;
+  crosshairTag.textContent=lbl;
+  crosshairTag.style.left=cx>vw-120?"-106px":"6px";
+}
 function renderTransform(){
   clampOffset();
   const vh=viewport.clientHeight,yScale=Math.min(1.6,Math.max(1,(vh*.85)/imgH));
   wfImg.style.transform=`translate(${offsetX}px,-50%) scale(${scale},${yScale})`;
-  zoomReadout.textContent=`ZOOM ${(scale/(viewport.clientWidth/imgW)).toFixed(1)}x`;
+  zoomReadout.textContent=`${(scale/(viewport.clientWidth/imgW)).toFixed(1)}x`;
   const vw=viewport.clientWidth;
   miniLens.style.left=`${Math.max(0,-offsetX/(imgW*scale))*100}%`;
   miniLens.style.width=`${Math.min(1,vw/(imgW*scale))*100}%`;
+  updateCrosshair(cursorX);
 }
 function fitAll(){scale=viewport.clientWidth/imgW;offsetX=0;renderTransform()}
 function zoomToFreq(mhz,ts=1){
@@ -88,10 +105,11 @@ function loadSnapshot(idx,keep=true){
   currentIdx=(idx+files.length)%files.length;
   dateSelect.value=currentIdx;
   const file=files[currentIdx];
-  fileInfo.textContent=`${file} (${currentIdx+1}/${files.length})`;
+  fileInfo.textContent=`${file.replace(/^satcom_248-268MHz_/,"")} (${currentIdx+1}/${files.length})`;
   wfImg.onload=()=>{imgW=wfImg.naturalWidth||12000;imgH=wfImg.naturalHeight||428;keep?renderTransform():fitAll()};
   wfImg.src=file;miniImg.src=file;
 }
+
 viewport.addEventListener("wheel",e=>{
   e.preventDefault();
   const r=viewport.getBoundingClientRect(),mx=e.clientX-r.left,ix=(mx-offsetX)/scale;
@@ -104,20 +122,63 @@ viewport.addEventListener("mousedown",e=>{drag=true;sx=e.clientX;so=offsetX});
 window.addEventListener("mouseup",()=>{drag=false;mDrag=false});
 window.addEventListener("mousemove",e=>{
   if(drag){offsetX=so+(e.clientX-sx);renderTransform()}
-  if(mDrag)seekMini(e);
+  if(mDrag)seekMini(e.clientX);
   const r=viewport.getBoundingClientRect();
   if(e.clientY>=r.top&&e.clientY<=r.bottom&&e.clientX>=r.left&&e.clientX<=r.right){
-    const mx=e.clientX-r.left,f=Math.min(1,Math.max(0,(mx-offsetX)/(imgW*scale)));
-    const lbl=`${(START_MHZ+f*SPAN_MHZ).toFixed(3)} MHz`;
-    freqReadout.textContent=lbl;crosshair.style.display="block";crosshair.style.left=`${mx}px`;
-    crosshairTag.textContent=lbl;crosshairTag.style.left=mx>r.width-130?"-112px":"8px";
-  }else crosshair.style.display="none";
+    cursorX=e.clientX-r.left;updateCrosshair(cursorX);
+  }
 });
-function seekMini(e){
-  const r=minimap.getBoundingClientRect(),f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
+
+let tMode=null,tStartX=0,tStartOffset=0,pinchDist=0,pinchScale=1,pinchImgX=0,lastTap=0;
+function getDist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY)}
+function getMidX(t,r){return(t[0].clientX+t[1].clientX)/2-r.left}
+
+viewport.addEventListener("touchstart",e=>{
+  const r=viewport.getBoundingClientRect();
+  if(e.touches.length===1){
+    const now=Date.now();
+    const tx=e.touches[0].clientX-r.left;
+    if(now-lastTap<280){
+      const base=viewport.clientWidth/imgW;
+      if(scale>base*1.5)fitAll();
+      else{
+        const f=Math.min(1,Math.max(0,(tx-offsetX)/(imgW*scale)));
+        zoomToFreq(START_MHZ+f*SPAN_MHZ,1.0);
+      }
+      lastTap=0;return;
+    }
+    lastTap=now;
+    tMode="pan";tStartX=e.touches[0].clientX;tStartOffset=offsetX;cursorX=tx;updateCrosshair(cursorX);
+  }else if(e.touches.length===2){
+    tMode="pinch";pinchDist=getDist(e.touches);pinchScale=scale;
+    const mx=getMidX(e.touches,r);pinchImgX=(mx-offsetX)/scale;cursorX=mx;
+  }
+},{passive:true});
+
+viewport.addEventListener("touchmove",e=>{
+  e.preventDefault();
+  const r=viewport.getBoundingClientRect();
+  if(tMode==="pan"&&e.touches.length===1){
+    offsetX=tStartOffset+(e.touches[0].clientX-tStartX);
+    cursorX=e.touches[0].clientX-r.left;
+    renderTransform();
+  }else if(tMode==="pinch"&&e.touches.length===2){
+    const d=getDist(e.touches),mx=getMidX(e.touches,r);
+    scale=Math.max(viewport.clientWidth/imgW,Math.min(4,pinchScale*(d/pinchDist)));
+    offsetX=mx-pinchImgX*scale;cursorX=mx;
+    renderTransform();
+  }
+},{passive:false});
+viewport.addEventListener("touchend",e=>{if(e.touches.length===0)tMode=null;else if(e.touches.length===1){tMode="pan";tStartX=e.touches[0].clientX;tStartOffset=offsetX}});
+
+function seekMini(clientX){
+  const r=minimap.getBoundingClientRect(),f=Math.min(1,Math.max(0,(clientX-r.left)/r.width));
   offsetX=viewport.clientWidth/2-f*imgW*scale;renderTransform();
 }
-minimap.addEventListener("mousedown",e=>{mDrag=true;seekMini(e)});
+minimap.addEventListener("mousedown",e=>{mDrag=true;seekMini(e.clientX)});
+minimap.addEventListener("touchstart",e=>{e.preventDefault();seekMini(e.touches[0].clientX)},{passive:false});
+minimap.addEventListener("touchmove",e=>{e.preventDefault();seekMini(e.touches[0].clientX)},{passive:false});
+
 dateSelect.onchange=()=>loadSnapshot(+dateSelect.value,true);
 $("prevBtn").onclick=()=>loadSnapshot(currentIdx+1,true);
 $("nextBtn").onclick=()=>loadSnapshot(currentIdx-1,true);
@@ -144,7 +205,7 @@ window.onresize=renderTransform;
 (async()=>{
   try{const r=await fetch("manifest.json?t="+Date.now());if(r.ok)files=await r.json()}catch(e){}
   if(!files.length){
-    const api=await fetch("https://github.com");
+    const api=await fetch("https://api.github.com/repos/satcom-uhf/satcom-snapshots/contents/");
     files=(await api.json()).map(x=>x.name).filter(n=>/\.(webp|png)$/i.test(n)).sort().reverse();
   }
   files.forEach((f,i)=>{
