@@ -3,351 +3,157 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SATCOM 248–268 MHz // Daily Spectrum Archive</title>
+<title>SATCOM 248–268 MHz // Spectrum Archive</title>
 <style>
-  :root {
-    --bg: #05080f;
-    --panel: rgba(11, 18, 32, 0.92);
-    --border: rgba(0, 240, 255, 0.25);
-    --cyan: #00f0ff;
-    --amber: #ffb800;
-    --text: #d8e8ff;
-    --muted: #6e88ad;
-  }
-  * { box-sizing: border-box; user-select: none; }
-  body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, monospace;
-    height: 100vh; display: flex; flex-direction: column; overflow: hidden;
-  }
-  .hud {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
-    padding: 10px 16px; background: var(--panel);
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 4px 24px rgba(0, 240, 255, 0.08);
-    z-index: 20;
-  }
-  .brand {
-    font-weight: 700; letter-spacing: 1px; color: var(--cyan);
-    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .dot {
-    width: 8px; height: 8px; border-radius: 50%; background: var(--cyan);
-    box-shadow: 0 0 8px var(--cyan); animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 50% { opacity: 0.3; } }
-
-  select, input, button {
-    background: #091120; color: var(--text);
-    border: 1px solid var(--border); border-radius: 4px;
-    padding: 6px 10px; font-family: inherit; font-size: 13px;
-    outline: none; transition: 0.15s;
-  }
-  select:hover, input:focus, button:hover {
-    border-color: var(--cyan); box-shadow: 0 0 8px rgba(0, 240, 255, 0.25);
-  }
-  button { cursor: pointer; }
-  button.active { background: rgba(0, 240, 255, 0.18); border-color: var(--cyan); color: #fff; }
-
-  .readout {
-    margin-left: auto; display: flex; align-items: center; gap: 14px;
-    background: #04070d; border: 1px solid var(--border);
-    padding: 5px 12px; border-radius: 4px;
-  }
-  .freq-val { font-size: 16px; font-weight: 700; color: var(--amber); min-width: 118px; text-align: right; }
-  .zoom-val { font-size: 12px; color: var(--muted); }
-
-  .minimap-wrap {
-    position: relative; height: 54px; background: #03050a;
-    border-bottom: 1px solid var(--border); cursor: crosshair; overflow: hidden;
-  }
-  .minimap-wrap img { width: 100%; height: 100%; object-fit: fill; opacity: 0.72; pointer-events: none; }
-  .minimap-lens {
-    position: absolute; top: 0; height: 100%;
-    border: 1px solid var(--cyan); background: rgba(0, 240, 255, 0.14);
-    box-shadow: 0 0 12px rgba(0, 240, 255, 0.35) inset;
-    pointer-events: none;
-  }
-
-  .viewport {
-    position: relative; flex: 1; overflow: hidden; cursor: grab;
-    background: radial-gradient(circle at center, #0a1222 0%, #04060b 100%);
-  }
-  .viewport:active { cursor: grabbing; }
-  #wfImg {
-    position: absolute; top: 50%; left: 0;
-    transform-origin: 0 50%;
-    image-rendering: auto;
-    will-change: transform;
-  }
-
-  .crosshair {
-    position: absolute; top: 0; bottom: 0; width: 1px;
-    background: rgba(255, 184, 0, 0.75);
-    box-shadow: 0 0 6px var(--amber);
-    pointer-events: none; display: none; z-index: 10;
-  }
-  .crosshair-tag {
-    position: absolute; top: 12px; left: 8px;
-    background: rgba(5, 8, 15, 0.92); border: 1px solid var(--amber);
-    color: var(--amber); padding: 3px 7px; border-radius: 3px;
-    font-size: 12px; font-weight: 700; white-space: nowrap;
-  }
-
-  .footer {
-    padding: 6px 16px; font-size: 11px; color: var(--muted);
-    background: var(--panel); border-top: 1px solid var(--border);
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
-  }
-  .kbd { color: var(--cyan); }
+  :root{--bg:#05080f;--panel:rgba(11,18,32,.9);--border:rgba(0,240,255,.25);--cyan:#00f0ff;--amber:#ffb800;--text:#d8e8ff;--muted:#6e88ad}
+  *{box-sizing:border-box;user-select:none}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Consolas,monospace;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+  .hud{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--border);z-index:20}
+  .brand{font-weight:700;color:var(--cyan);text-shadow:0 0 10px rgba(0,240,255,.5);display:flex;align-items:center;gap:8px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+  select,input,button{background:#091120;color:var(--text);border:1px solid var(--border);border-radius:4px;padding:6px 10px;font-family:inherit;font-size:13px;outline:none}
+  select:hover,input:focus,button:hover{border-color:var(--cyan)}
+  button{cursor:pointer}
+  button.active{background:rgba(0,240,255,.2);border-color:var(--cyan);color:#fff}
+  .readout{margin-left:auto;display:flex;align-items:center;gap:14px;background:#04070d;border:1px solid var(--border);padding:5px 12px;border-radius:4px}
+  .freq-val{font-size:16px;font-weight:700;color:var(--amber);min-width:118px;text-align:right}
+  .zoom-val{font-size:12px;color:var(--muted)}
+  .minimap-wrap{position:relative;height:52px;background:#03050a;border-bottom:1px solid var(--border);cursor:crosshair;overflow:hidden}
+  .minimap-wrap img{width:100%;height:100%;object-fit:fill;opacity:.72;pointer-events:none}
+  .minimap-lens{position:absolute;top:0;height:100%;border:1px solid var(--cyan);background:rgba(0,240,255,.15);pointer-events:none}
+  .viewport{position:relative;flex:1;overflow:hidden;cursor:grab;background:#04060b}
+  .viewport:active{cursor:grabbing}
+  #wfImg{position:absolute;top:50%;left:0;transform-origin:0 50%;will-change:transform}
+  .crosshair{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,184,0,.8);pointer-events:none;display:none;z-index:10}
+  .crosshair-tag{position:absolute;top:12px;left:8px;background:rgba(5,8,15,.92);border:1px solid var(--amber);color:var(--amber);padding:3px 7px;border-radius:3px;font-size:12px;font-weight:700;white-space:nowrap}
+  .footer{padding:6px 16px;font-size:11px;color:var(--muted);background:var(--panel);border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .kbd{color:var(--cyan)}
 </style>
 </head>
 <body>
-
 <div class="hud">
   <div class="brand"><span class="dot"></span>SATCOM // 248–268 MHz</div>
-
   <button id="prevBtn" title="Предыдущий снимок (←)">◀</button>
   <select id="dateSelect"></select>
   <button id="nextBtn" title="Следующий снимок (→)">▶</button>
-
-  <button id="abBtn" title="Быстрое сравнение с предыдущим днём (Space)">A/B Сравнить</button>
-
-  <input id="freqInput" type="text" placeholder="Частота МГц (напр. 255.55)" style="width:195px">
+  <button id="abBtn" title="Сравнить с соседним днём (Space)">A/B Сравнить</button>
+  <input id="freqInput" type="text" placeholder="Частота (255.55)" style="width:155px">
   <button id="goBtn">Перейти</button>
   <button id="fitBtn">Весь диапазон</button>
-  <button id="oneToOneBtn">1:1 Пиксели</button>
-
+  <button id="oneToOneBtn">1:1</button>
   <div class="readout">
     <span class="zoom-val" id="zoomReadout">ZOOM 1.0x</span>
     <span class="freq-val" id="freqReadout">258.000 MHz</span>
   </div>
 </div>
-
 <div class="minimap-wrap" id="minimap">
-  <img id="miniImg" alt="minimap">
+  <img id="miniImg" alt="">
   <div class="minimap-lens" id="miniLens"></div>
 </div>
-
 <div class="viewport" id="viewport">
-  <img id="wfImg" alt="waterfall">
-  <div class="crosshair" id="crosshair">
-    <div class="crosshair-tag" id="crosshairTag">258.000 MHz</div>
-  </div>
+  <img id="wfImg" alt="">
+  <div class="crosshair" id="crosshair"><div class="crosshair-tag" id="crosshairTag">258.000 MHz</div></div>
 </div>
-
 <div class="footer">
-  <div>Управление: <span class="kbd">Колёсико</span> — зум в курсор · <span class="kbd">ЛКМ + тащить</span> — панорама · <span class="kbd">← / →</span> — смена даты · <span class="kbd">Space</span> — A/B сравнение</div>
-  <div id="fileInfo">Загрузка архива...</div>
+  <div><span class="kbd">Колёсико</span> — зум · <span class="kbd">ЛКМ</span> — панорама · <span class="kbd">←/→</span> — дата · <span class="kbd">Space</span> — A/B сравнение</div>
+  <div id="fileInfo">Загрузка...</div>
 </div>
-
 <script>
-const START_MHZ = 248.0;
-const SPAN_MHZ = 20.0;
+const START_MHZ=248,SPAN_MHZ=20;
+let files=[],currentIdx=0,abTimer=null,scale=1,offsetX=0,imgW=12000,imgH=428;
+const $=id=>document.getElementById(id);
+const wfImg=$("wfImg"),miniImg=$("miniImg"),miniLens=$("miniLens"),viewport=$("viewport"),minimap=$("minimap"),dateSelect=$("dateSelect"),freqReadout=$("freqReadout"),zoomReadout=$("zoomReadout"),crosshair=$("crosshair"),crosshairTag=$("crosshairTag"),fileInfo=$("fileInfo");
 
-let files = [];
-let currentIdx = 0;
-let abTimer = null;
-
-let scale = 1;
-let offsetX = 0;
-let imgW = 12000;
-let imgH = 428;
-
-const wfImg = document.getElementById("wfImg");
-const miniImg = document.getElementById("miniImg");
-const miniLens = document.getElementById("miniLens");
-const viewport = document.getElementById("viewport");
-const minimap = document.getElementById("minimap");
-const dateSelect = document.getElementById("dateSelect");
-const freqReadout = document.getElementById("freqReadout");
-const zoomReadout = document.getElementById("zoomReadout");
-const crosshair = document.getElementById("crosshair");
-const crosshairTag = document.getElementById("crosshairTag");
-const fileInfo = document.getElementById("fileInfo");
-
-function clampOffset() {
-  const vw = viewport.clientWidth;
-  const scaledW = imgW * scale;
-  if (scaledW <= vw) {
-    offsetX = (vw - scaledW) / 2;
-  } else {
-    offsetX = Math.min(0, Math.max(vw - scaledW, offsetX));
-  }
+function clampOffset(){
+  const vw=viewport.clientWidth,sw=imgW*scale;
+  offsetX=sw<=vw?(vw-sw)/2:Math.min(0,Math.max(vw-sw,offsetX));
 }
-
-function renderTransform() {
+function renderTransform(){
   clampOffset();
-  const vh = viewport.clientHeight;
-  const yScale = Math.min(1.6, Math.max(1, (vh * 0.85) / imgH));
-  wfImg.style.transform = `translate(${offsetX}px, -50%) scale(${scale}, ${yScale})`;
-
-  const baseScale = viewport.clientWidth / imgW;
-  zoomReadout.textContent = `ZOOM ${(scale / baseScale).toFixed(1)}x`;
-
-  const vw = viewport.clientWidth;
-  const leftFrac = Math.max(0, -offsetX / (imgW * scale));
-  const widthFrac = Math.min(1, vw / (imgW * scale));
-  miniLens.style.left = `${leftFrac * 100}%`;
-  miniLens.style.width = `${widthFrac * 100}%`;
+  const vh=viewport.clientHeight,yScale=Math.min(1.6,Math.max(1,(vh*.85)/imgH));
+  wfImg.style.transform=`translate(${offsetX}px,-50%) scale(${scale},${yScale})`;
+  zoomReadout.textContent=`ZOOM ${(scale/(viewport.clientWidth/imgW)).toFixed(1)}x`;
+  const vw=viewport.clientWidth;
+  miniLens.style.left=`${Math.max(0,-offsetX/(imgW*scale))*100}%`;
+  miniLens.style.width=`${Math.min(1,vw/(imgW*scale))*100}%`;
 }
-
-function fitAll() {
-  scale = viewport.clientWidth / imgW;
-  offsetX = 0;
-  renderTransform();
+function fitAll(){scale=viewport.clientWidth/imgW;offsetX=0;renderTransform()}
+function zoomToFreq(mhz,ts=1){
+  const f=(Math.min(268,Math.max(248,mhz))-START_MHZ)/SPAN_MHZ;
+  scale=Math.max(viewport.clientWidth/imgW,Math.min(4,ts));
+  offsetX=viewport.clientWidth/2-f*imgW*scale;renderTransform();
 }
-
-function zoomToFreq(mhz, targetScale = 1.0) {
-  const clampedMhz = Math.min(START_MHZ + SPAN_MHZ, Math.max(START_MHZ, mhz));
-  const frac = (clampedMhz - START_MHZ) / SPAN_MHZ;
-  scale = Math.max(viewport.clientWidth / imgW, Math.min(4, targetScale));
-  offsetX = viewport.clientWidth / 2 - frac * imgW * scale;
-  renderTransform();
+function loadSnapshot(idx,keep=true){
+  if(!files.length)return;
+  currentIdx=(idx+files.length)%files.length;
+  dateSelect.value=currentIdx;
+  const file=files[currentIdx];
+  fileInfo.textContent=`${file} (${currentIdx+1}/${files.length})`;
+  wfImg.onload=()=>{imgW=wfImg.naturalWidth||12000;imgH=wfImg.naturalHeight||428;keep?renderTransform():fitAll()};
+  wfImg.src=file;miniImg.src=file;
 }
-
-function loadSnapshot(idx, keepView = true) {
-  if (!files.length) return;
-  currentIdx = (idx + files.length) % files.length;
-  dateSelect.value = currentIdx;
-  const file = files[currentIdx];
-  fileInfo.textContent = `Файл: ${file} (${currentIdx + 1} из ${files.length})`;
-
-  wfImg.onload = () => {
-    imgW = wfImg.naturalWidth || 12000;
-    imgH = wfImg.naturalHeight || 428;
-    if (!keepView) fitAll();
-    else renderTransform();
-  };
-  wfImg.src = file;
-  miniImg.src = file;
-}
-
-viewport.addEventListener("wheel", (e) => {
+viewport.addEventListener("wheel",e=>{
   e.preventDefault();
-  const rect = viewport.getBoundingClientRect();
-  const mouseX = e.clientX - rect.left;
-  const imgX = (mouseX - offsetX) / scale;
+  const r=viewport.getBoundingClientRect(),mx=e.clientX-r.left,ix=(mx-offsetX)/scale;
+  scale=Math.max(viewport.clientWidth/imgW,Math.min(4,scale*(e.deltaY<0?1.28:1/1.28)));
+  offsetX=mx-ix*scale;renderTransform();
+},{passive:false});
 
-  const factor = e.deltaY < 0 ? 1.28 : 1 / 1.28;
-  const minScale = viewport.clientWidth / imgW;
-  scale = Math.max(minScale, Math.min(4.0, scale * factor));
-  offsetX = mouseX - imgX * scale;
-  renderTransform();
-}, { passive: false });
-
-let dragging = false, startX = 0, startOffset = 0;
-viewport.addEventListener("mousedown", (e) => {
-  dragging = true; startX = e.clientX; startOffset = offsetX;
+let drag=false,sx=0,so=0,mDrag=false;
+viewport.addEventListener("mousedown",e=>{drag=true;sx=e.clientX;so=offsetX});
+window.addEventListener("mouseup",()=>{drag=false;mDrag=false});
+window.addEventListener("mousemove",e=>{
+  if(drag){offsetX=so+(e.clientX-sx);renderTransform()}
+  if(mDrag)seekMini(e);
+  const r=viewport.getBoundingClientRect();
+  if(e.clientY>=r.top&&e.clientY<=r.bottom&&e.clientX>=r.left&&e.clientX<=r.right){
+    const mx=e.clientX-r.left,f=Math.min(1,Math.max(0,(mx-offsetX)/(imgW*scale)));
+    const lbl=`${(START_MHZ+f*SPAN_MHZ).toFixed(3)} MHz`;
+    freqReadout.textContent=lbl;crosshair.style.display="block";crosshair.style.left=`${mx}px`;
+    crosshairTag.textContent=lbl;crosshairTag.style.left=mx>r.width-130?"-112px":"8px";
+  }else crosshair.style.display="none";
 });
-window.addEventListener("mouseup", () => dragging = false);
-window.addEventListener("mousemove", (e) => {
-  const rect = viewport.getBoundingClientRect();
-  if (dragging) {
-    offsetX = startOffset + (e.clientX - startX);
-    renderTransform();
-  }
-  if (e.clientY >= rect.top && e.clientY <= rect.bottom && e.clientX >= rect.left && e.clientX <= rect.right) {
-    const mouseX = e.clientX - rect.left;
-    const frac = Math.min(1, Math.max(0, (mouseX - offsetX) / (imgW * scale)));
-    const mhz = START_MHZ + frac * SPAN_MHZ;
-    const label = `${mhz.toFixed(3)} MHz`;
-    freqReadout.textContent = label;
-    crosshair.style.display = "block";
-    crosshair.style.left = `${mouseX}px`;
-    crosshairTag.textContent = label;
-    crosshairTag.style.left = mouseX > rect.width - 130 ? "-112px" : "8px";
-  } else {
-    crosshair.style.display = "none";
-  }
-});
-
-let miniDrag = false;
-function seekMinimap(e) {
-  const rect = minimap.getBoundingClientRect();
-  const frac = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
-  offsetX = viewport.clientWidth / 2 - frac * imgW * scale;
-  renderTransform();
+function seekMini(e){
+  const r=minimap.getBoundingClientRect(),f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
+  offsetX=viewport.clientWidth/2-f*imgW*scale;renderTransform();
 }
-minimap.addEventListener("mousedown", (e) => { miniDrag = true; seekMinimap(e); });
-window.addEventListener("mouseup", () => miniDrag = false);
-window.addEventListener("mousemove", (e) => { if (miniDrag) seekMinimap(e); });
+minimap.addEventListener("mousedown",e=>{mDrag=true;seekMini(e)});
+dateSelect.onchange=()=>loadSnapshot(+dateSelect.value,true);
+$("prevBtn").onclick=()=>loadSnapshot(currentIdx+1,true);
+$("nextBtn").onclick=()=>loadSnapshot(currentIdx-1,true);
+$("fitBtn").onclick=fitAll;
+$("oneToOneBtn").onclick=()=>zoomToFreq(START_MHZ+((viewport.clientWidth/2-offsetX)/(imgW*scale))*SPAN_MHZ,1);
+$("goBtn").onclick=()=>{const v=parseFloat($("freqInput").value.replace(",","."));if(!isNaN(v))zoomToFreq(v,Math.max(scale,1))};
+$("freqInput").onkeydown=e=>{if(e.key==="Enter")$("goBtn").click()};
 
-dateSelect.addEventListener("change", () => loadSnapshot(Number(dateSelect.value), true));
-document.getElementById("prevBtn").onclick = () => loadSnapshot(currentIdx + 1, true);
-document.getElementById("nextBtn").onclick = () => loadSnapshot(currentIdx - 1, true);
-document.getElementById("fitBtn").onclick = fitAll;
-document.getElementById("oneToOneBtn").onclick = () => {
-  const centerFreq = START_MHZ + ((viewport.clientWidth / 2 - offsetX) / (imgW * scale)) * SPAN_MHZ;
-  zoomToFreq(centerFreq, 1.0);
-};
-document.getElementById("goBtn").onclick = () => {
-  const val = parseFloat(document.getElementById("freqInput").value.replace(",", "."));
-  if (!isNaN(val)) zoomToFreq(val, Math.max(scale, 1.0));
-};
-document.getElementById("freqInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") document.getElementById("goBtn").click();
-});
-
-const abBtn = document.getElementById("abBtn");
-function toggleAB() {
-  if (abTimer) {
-    clearInterval(abTimer); abTimer = null;
-    abBtn.classList.remove("active");
-    return;
-  }
-  if (files.length < 2) return;
-  const baseIdx = currentIdx;
-  const altIdx = (currentIdx + 1) % files.length;
-  let showAlt = false;
-  abBtn.classList.add("active");
-  abTimer = setInterval(() => {
-    showAlt = !showAlt;
-    loadSnapshot(showAlt ? altIdx : baseIdx, true);
-  }, 850);
+function toggleAB(){
+  if(abTimer){clearInterval(abTimer);abTimer=null;$("abBtn").classList.remove("active");return}
+  if(files.length<2)return;
+  const b=currentIdx,a=(currentIdx+1)%files.length;let s=false;$("abBtn").classList.add("active");
+  abTimer=setInterval(()=>{s=!s;loadSnapshot(s?a:b,true)},850);
 }
-abBtn.onclick = toggleAB;
+$("abBtn").onclick=toggleAB;
+window.onkeydown=e=>{
+  if(document.activeElement.tagName==="INPUT")return;
+  if(e.key==="ArrowLeft")loadSnapshot(currentIdx+1,true);
+  if(e.key==="ArrowRight")loadSnapshot(currentIdx-1,true);
+  if(e.code==="Space"){e.preventDefault();toggleAB()}
+};
+window.onresize=renderTransform;
 
-window.addEventListener("keydown", (e) => {
-  if (document.activeElement.tagName === "INPUT") return;
-  if (e.key === "ArrowLeft") loadSnapshot(currentIdx + 1, true);
-  if (e.key === "ArrowRight") loadSnapshot(currentIdx - 1, true);
-  if (e.code === "Space") { e.preventDefault(); toggleAB(); }
-});
-window.addEventListener("resize", renderTransform);
-
-async function init() {
-  try {
-    const r = await fetch("manifest.json?t=" + Date.now());
-    if (r.ok) files = await r.json();
-  } catch (e) {}
-
-  if (!files.length && location.hostname.endsWith("github.io")) {
-    const owner = location.hostname.split(".")[0];
-    const repo = location.pathname.split("/").filter(Boolean)[0];
-    if (owner && repo) {
-      try {
-        const api = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/`);
-        if (api.ok) {
-          const items = await api.json();
-          files = items.map(x => x.name).filter(n => /\.(webp|png)$/i.test(n)).sort().reverse();
-        }
-      } catch (e) {}
-    }
+(async()=>{
+  try{const r=await fetch("manifest.json?t="+Date.now());if(r.ok)files=await r.json()}catch(e){}
+  if(!files.length){
+    const api=await fetch("https://github.com");
+    files=(await api.json()).map(x=>x.name).filter(n=>/\.(webp|png)$/i.test(n)).sort().reverse();
   }
-
-  files.forEach((f, i) => {
-    const opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = f.replace(/^satcom_248-268MHz_/, "").replace(/\.(webp|png)$/i, "").replace("_", " ");
-    dateSelect.appendChild(opt);
+  files.forEach((f,i)=>{
+    const o=document.createElement("option");o.value=i;
+    o.textContent=f.replace(/^satcom_248-268MHz_/,"").replace(/\.(webp|png)$/i,"").replace("_"," ");
+    dateSelect.appendChild(o);
   });
-
-  if (files.length) loadSnapshot(0, false);
-  else fileInfo.textContent = "Снимки пока не найдены.";
-}
-init();
+  files.length?loadSnapshot(0,false):fileInfo.textContent="Снимков пока нет.";
+})();
 </script>
 </body>
 </html>
