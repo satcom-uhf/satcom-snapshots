@@ -1,0 +1,26 @@
+name: Post Snapshot to Telegram
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'satcom_248-268MHz_*.webp'
+
+jobs:
+  telegram:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Send post to Telegram channel
+        env:
+          BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        run: |
+          FILE=$(ls -1 satcom_248-268MHz_*.webp | sort -r | head -n 1)
+          STAMP=$(echo "$FILE" | sed -E 's/satcom_248-268MHz_([0-9-]+)_([0-9]+)-([0-9]+)-[0-9]+\.webp/\1 \2:\3/')
+          TEXT="📡 <b>Суточный слепок эфира SATCOM</b>%0A🕒 Время: <code>${STAMP}</code>%0A%0A🔍 <a href=\"https://github.io\">Открыть интерактивную панораму с зумом и частотомером</a>"
+          curl -s -X POST "https://telegram.org{BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${CHAT_ID}" \
+            -d "parse_mode=HTML" \
+            -d "text=${TEXT}"
