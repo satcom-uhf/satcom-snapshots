@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'satcom_248-268MHz_*.webp'
+      - 'satcom_248-268MHz_*'
   workflow_dispatch:
 
 jobs:
@@ -13,18 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Send snapshot file to Telegram channel
+      - name: Send post to Telegram channel
         env:
           BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TG_CHAT_ID }}
         run: |
-          FILE=$(ls -1 satcom_248-268MHz_*.webp | sort -r | head -n 1)
-          STAMP=$(echo "$FILE" | sed -E 's/satcom_248-268MHz_([0-9-]+)_([0-9]+)-([0-9]+)-[0-9]+\.webp/\1 \2:\3/')
-          TG_API="https://api.telegram"".""org/bot${BOT_TOKEN}/sendDocument"
-          GALLERY="https://satcom-uhf.github"".""io/satcom-snapshots/"
-          CAPTION=$(printf "📡 <b>Суточный слепок эфира SATCOM (248–268 МГц)</b>\n🕒 Время: <code>%s</code>\n\n🔍 <a href=\"%s\">Открыть интерактивную панораму с зумом и частотоме</a>" "$STAMP" "$GALLERY")
+          FILE=$(ls -1 satcom_248-268MHz_* 2>/dev/null | sort -r | head -n 1)
+          STAMP=$(echo "$FILE" | sed -E 's/satcom_248-268MHz_([0-9-]+)_([0-9]+)-([0-9]+)-[0-9]+\..*/\1 \2:\3/')
+          TG_API="https://api.telegram"".""org/bot${BOT_TOKEN}/sendMessage"
+          BASE_URL="https://satcom-uhf.github"".""io/satcom-snapshots"
+          IMG_URL="${BASE_URL}/${FILE}"
+          TEXT=$(printf "📡 <b>Суточный слепок эфира SATCOM (248–268 МГц)</b>\n🕒 Время: <code>%s</code>\n\n🔍 <a href=\"%s/\">Открыть интерактивную панораму с зумом</a>\n🖼 <a href=\"%s\">Прямая ссылка на снимок (12000 px)</a>" "$STAMP" "$BASE_URL" "$IMG_URL")
           curl -f -s -X POST "${TG_API}" \
-            -F "chat_id=${CHAT_ID}" \
-            -F "document=@${FILE}" \
-            -F "parse_mode=HTML" \
-            -F "caption=${CAPTION}"
+            -d "chat_id=${CHAT_ID}" \
+            -d "parse_mode=HTML" \
+            --data-urlencode "text=${TEXT}"
