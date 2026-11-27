@@ -13,17 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Send post to Telegram channel
+      - name: Send snapshot file to Telegram channel
         env:
           BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TG_CHAT_ID }}
         run: |
           FILE=$(ls -1 satcom_248-268MHz_*.webp | sort -r | head -n 1)
           STAMP=$(echo "$FILE" | sed -E 's/satcom_248-268MHz_([0-9-]+)_([0-9]+)-([0-9]+)-[0-9]+\.webp/\1 \2:\3/')
-          TG_API="https://api.telegram"".""org/bot${BOT_TOKEN}/sendMessage"
+          TG_API="https://api.telegram"".""org/bot${BOT_TOKEN}/sendDocument"
           GALLERY="https://satcom-uhf.github"".""io/satcom-snapshots/"
-          TEXT="📡 <b>Суточный слепок эфира SATCOM (248–268 МГц)</b>%0A🕒 Время: <code>${STAMP}</code>%0A%0A🔍 <a href=\"${GALLERY}\">Открыть интерактивную панораму с зумом и частотомером</a>"
+          CAPTION=$(printf "📡 <b>Суточный слепок эфира SATCOM (248–268 МГц)</b>\n🕒 Время: <code>%s</code>\n\n🔍 <a href=\"%s\">Открыть интерактивную панораму с зумом и частотоме</a>" "$STAMP" "$GALLERY")
           curl -f -s -X POST "${TG_API}" \
-            -d "chat_id=${CHAT_ID}" \
-            -d "parse_mode=HTML" \
-            -d "text=${TEXT}"
+            -F "chat_id=${CHAT_ID}" \
+            -F "document=@${FILE}" \
+            -F "parse_mode=HTML" \
+            -F "caption=${CAPTION}"
