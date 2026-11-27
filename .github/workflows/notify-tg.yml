@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'satcom_248-268MHz_*.webp'
+  workflow_dispatch:
 
 jobs:
   telegram:
@@ -19,8 +20,10 @@ jobs:
         run: |
           FILE=$(ls -1 satcom_248-268MHz_*.webp | sort -r | head -n 1)
           STAMP=$(echo "$FILE" | sed -E 's/satcom_248-268MHz_([0-9-]+)_([0-9]+)-([0-9]+)-[0-9]+\.webp/\1 \2:\3/')
-          TEXT="📡 <b>Суточный слепок эфира SATCOM</b>%0A🕒 Время: <code>${STAMP}</code>%0A%0A🔍 <a href=\"https://github.io\">Открыть интерактивную панораму с зумом и частотомером</a>"
-          curl -s -X POST "https://telegram.org{BOT_TOKEN}/sendMessage" \
+          TG_API="https://api.telegram"".""org/bot${BOT_TOKEN}/sendMessage"
+          GALLERY="https://satcom-uhf.github"".""io/satcom-snapshots/"
+          TEXT="📡 <b>Суточный слепок эфира SATCOM (248–268 МГц)</b>%0A🕒 Время: <code>${STAMP}</code>%0A%0A🔍 <a href=\"${GALLERY}\">Открыть интерактивную панораму с зумом и частотомером</a>"
+          curl -f -s -X POST "${TG_API}" \
             -d "chat_id=${CHAT_ID}" \
             -d "parse_mode=HTML" \
             -d "text=${TEXT}"
