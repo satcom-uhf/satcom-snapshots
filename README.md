@@ -1,8 +1,11 @@
-# Satcom 248–268 MHz Daily Snapshots
+# Satcom 248-268 MHz Daily Snapshots
 
-### Последний снимок: `satcom_248-268MHz_2026-11-27_13-48-20.webp`
-![latest](satcom_248-268MHz_2026-11-27_13-48-20.webp)
+[Gallery](https://github.io)
 
-## Архив
+### Latest: `satcom_248-268MHz_2026-11-27_14-14-26.webp`
+![latest](satcom_248-268MHz_2026-11-27_14-14-26.webp)
 
+## Archive
+
+- [satcom_248-268MHz_2026-11-27_14-14-26.webp](satcom_248-268MHz_2026-11-27_14-14-26.webp)
 - [satcom_248-268MHz_2026-11-27_13-48-20.webp](satcom_248-268MHz_2026-11-27_13-48-20.webp)
