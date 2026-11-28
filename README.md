@@ -1,12 +1,10 @@
 # Satcom 248-268 MHz Daily Snapshots
 
-[Открыть интерактивную галерею с зумом и частотомером](https://github.io)
-
-### Latest: `['satcom_248-268MHz_2026-11-27_21-00-01.webp', 'satcom_248-268MHz_2026-11-27_14-47-39.webp', 'satcom_248-268MHz_2026-11-27_14-30-41.webp', 'satcom_248-268MHz_2026-11-27_14-14-26.webp', 'satcom_248-268MHz_2026-11-27_13-48-20.webp']`
-![latest](['satcom_248-268MHz_2026-11-27_21-00-01.webp', 'satcom_248-268MHz_2026-11-27_14-47-39.webp', 'satcom_248-268MHz_2026-11-27_14-30-41.webp', 'satcom_248-268MHz_2026-11-27_14-14-26.webp', 'satcom_248-268MHz_2026-11-27_13-48-20.webp'])
+[Открыть интерактивную галерею с зумом и частотомером](https://satcom-uhf.github.io/satcom-snapshots/)
 
 ## Archive
 
+- [satcom_248-268MHz_2026-11-28_11-14-51.webp](satcom_248-268MHz_2026-11-28_11-14-51.webp)
 - [satcom_248-268MHz_2026-11-27_21-00-01.webp](satcom_248-268MHz_2026-11-27_21-00-01.webp)
 - [satcom_248-268MHz_2026-11-27_14-47-39.webp](satcom_248-268MHz_2026-11-27_14-47-39.webp)
 - [satcom_248-268MHz_2026-11-27_14-30-41.webp](satcom_248-268MHz_2026-11-27_14-30-41.webp)
